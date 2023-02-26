@@ -1,4 +1,5 @@
 import 'package:chat/app/models/auth_form_data.dart';
+import 'package:chat/app/utils/validator_form.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -33,21 +34,24 @@ class _AuthFormState extends State<AuthForm> {
                       onChanged: (value) => _formData.name = value,
                       decoration: const InputDecoration(labelText: 'Nome'),
                       keyboardType: TextInputType.text,
+                      validator: (value) => ValidatorForm.validateName(value ?? ''),
                     )
                   : const SizedBox.shrink(),
               TextFormField(
                 key: const ValueKey('email'),
                 initialValue: _formData.name,
-                onChanged: (value) => _formData.name = value,
+                onChanged: (value) => _formData.email = value,
                 decoration: const InputDecoration(labelText: 'E-mail'),
                 keyboardType: TextInputType.emailAddress,
+                validator: (value) => ValidatorForm.validateEmail(value ?? ''),
               ),
               TextFormField(
                 key: const ValueKey('password'),
                 initialValue: _formData.name,
-                onChanged: (value) => _formData.name = value,
+                onChanged: (value) => _formData.password = value,
                 decoration: const InputDecoration(labelText: 'Senha'),
                 keyboardType: TextInputType.visiblePassword,
+                validator: (value) => ValidatorForm.validatePassword(value ?? ''),
                 obscureText: true,
               ),
               const SizedBox(height: 20),
