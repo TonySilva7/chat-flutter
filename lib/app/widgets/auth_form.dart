@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chat/app/models/auth_form_data.dart';
+import 'package:chat/app/core/models/auth_form_data.dart';
 import 'package:chat/app/utils/validator_form.dart';
 import 'package:chat/app/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';

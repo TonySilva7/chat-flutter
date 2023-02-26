@@ -1,4 +1,4 @@
-import 'package:chat/app/models/auth_form_data.dart';
+import 'package:chat/app/core/models/auth_form_data.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/auth_form.dart';
@@ -14,11 +14,19 @@ class _AuthPageState extends State<AuthPage> {
   bool isLoading = false;
 
   void _handleSubmit(AuthFormData formData) {
-    setState(() => isLoading = true);
-    print(formData.name);
-    print(formData.email);
-    print(formData.password);
-    setState(() => isLoading = false);
+    try {
+      setState(() => isLoading = true);
+      if (formData.isLogin) {
+        // Fazer login
+      } else {
+        // Fazer cadastro
+      }
+    } on Exception catch (e) {
+      print(e);
+      // Tratar o erro
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
