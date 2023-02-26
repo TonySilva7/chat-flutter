@@ -7,7 +7,7 @@ class ValidatorForm {
 
   static String? validateName(String value) {
     String name = value.trim();
-    if (value.isNotEmpty && RegExp(_regex['name']!).hasMatch(name)) {
+    if (value.length > 3 && RegExp(_regex['name']!).hasMatch(name)) {
       return null;
     }
     return 'Nome nulo ou inválido';

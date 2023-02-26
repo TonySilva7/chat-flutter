@@ -3,7 +3,8 @@ import 'package:chat/app/utils/validator_form.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  final void Function(AuthFormData) handleSubmit;
+  const AuthForm({super.key, required this.handleSubmit});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -13,8 +14,12 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   final AuthFormData _formData = AuthFormData();
 
-  void _handleSubmit() {
-    _formKey.currentState?.validate();
+  void _submitForm() {
+    final bool isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) return;
+
+    widget.handleSubmit(_formData);
   }
 
   @override
@@ -56,7 +61,7 @@ class _AuthFormState extends State<AuthForm> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _handleSubmit,
+                onPressed: _submitForm,
                 child: Text(_formData.isLogin ? 'Entrar' : 'Cadastrar'),
               ),
               const SizedBox(height: 20),
