@@ -13,7 +13,7 @@ class UserImagePicker extends StatefulWidget {
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  File? _storedImage;
+  File? _image;
   final ImagePicker picker = ImagePicker();
 
   Future<void> getLostData() async {
@@ -33,12 +33,23 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
   _handleFile(XFile file) {
     setState(() {
-      _storedImage = File(file.path);
+      _image = File(file.path);
     });
   }
 
   _handleError(PlatformException? exception) {
     print(exception);
+  }
+
+  Future<void> _handlePickImage() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxWidth: 150);
+
+    if (image == null) return;
+    setState(() {
+      _image = File(image.path);
+    });
+
+    widget.onImagePick(_image!);
   }
 
   @override
@@ -47,8 +58,22 @@ class _UserImagePickerState extends State<UserImagePicker> {
       CircleAvatar(
         radius: 40,
         backgroundColor: Colors.grey,
-        backgroundImage: _storedImage != null ? FileImage(_storedImage!) : null,
+        backgroundImage: _image != null ? FileImage(_image!) : null,
       ),
+      TextButton(
+        onPressed: _handlePickImage,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.image,
+              color: Theme.of(context).primaryColor,
+            ),
+            const SizedBox(width: 5),
+            const Text('Adicionar imagem'),
+          ],
+        ),
+      )
     ]);
   }
 }
