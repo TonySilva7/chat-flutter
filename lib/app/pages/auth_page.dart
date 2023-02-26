@@ -43,12 +43,13 @@ class _AuthPageState extends State<AuthPage> {
           ),
           if (isLoading)
             Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                )),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );
