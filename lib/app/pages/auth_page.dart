@@ -1,4 +1,5 @@
 import 'package:chat/app/core/models/auth_form_data.dart';
+import 'package:chat/app/core/services/auth/auth_service_impl.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/auth_form.dart';
@@ -13,13 +14,20 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool isLoading = false;
 
-  void _handleSubmit(AuthFormData formData) {
+  Future<void> _handleSubmit(AuthFormData formData) async {
     try {
       setState(() => isLoading = true);
       if (formData.isLogin) {
         // Fazer login
+        await AuthServiceImpl().login(formData.email, formData.password);
       } else {
         // Fazer cadastro
+        await AuthServiceImpl().signup(
+          formData.name,
+          formData.email,
+          formData.password,
+          formData.image,
+        );
       }
     } on Exception catch (e) {
       print(e);

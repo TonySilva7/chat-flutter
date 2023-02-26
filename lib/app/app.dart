@@ -1,4 +1,4 @@
-import 'package:chat/app/pages/auth_page.dart';
+import 'package:chat/app/pages/auth_or_app_page.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const AuthPage(),
+      home: AuthOrAppPage(),
     );
   }
 }
