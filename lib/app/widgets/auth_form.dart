@@ -33,7 +33,7 @@ class AuthForm extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {},
-                child: const Text('Criar uma nova conta'),
+                child: const Text('Criar uma nova conta?'),
               ),
             ],
           ),
