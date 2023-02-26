@@ -11,8 +11,14 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  bool isLoading = false;
+
   void _handleSubmit(AuthFormData formData) {
+    setState(() => isLoading = true);
+    print(formData.name);
     print(formData.email);
+    print(formData.password);
+    setState(() => isLoading = false);
   }
 
   @override
@@ -35,6 +41,14 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
           ),
+          if (isLoading)
+            Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                )),
         ],
       ),
     );
