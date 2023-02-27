@@ -5,14 +5,24 @@ import 'dart:io';
 
 import 'package:chat/app/core/services/auth/auth_service_protocol.dart';
 
-class AuthServiceImpl implements AuthServiceProtocol {
-  static final Map<String, ChatUser> _users = {};
+class AuthServiceMock implements AuthServiceProtocol {
+  static final defaultUser = ChatUser(
+    id: '1',
+    name: 'John Doe',
+    email: 'doe@mail.com',
+    imageUrl: 'assets/images/avatar.png',
+  );
+
+  static final Map<String, ChatUser> _users = {
+    defaultUser.email: defaultUser,
+  };
+
   static ChatUser? _currentUser;
   static MultiStreamController<ChatUser?>? _controller;
 
   static final _userStream = Stream<ChatUser?>.multi((controller) {
     _controller = controller;
-    _updateUser(null);
+    _updateUser(defaultUser);
   });
 
   static void _updateUser(ChatUser? user) {

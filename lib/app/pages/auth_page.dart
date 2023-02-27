@@ -1,5 +1,5 @@
 import 'package:chat/app/core/models/auth_form_data.dart';
-import 'package:chat/app/core/services/auth/auth_service_impl.dart';
+import 'package:chat/app/core/services/auth/auth_service_factory.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/auth_form.dart';
@@ -19,10 +19,10 @@ class _AuthPageState extends State<AuthPage> {
       setState(() => isLoading = true);
       if (formData.isLogin) {
         // Fazer login
-        await AuthServiceImpl().login(formData.email, formData.password);
+        await AuthServiceFactory.create().login(formData.email, formData.password);
       } else {
         // Fazer cadastro
-        await AuthServiceImpl().signup(
+        await AuthServiceFactory.create().signup(
           formData.name,
           formData.email,
           formData.password,
