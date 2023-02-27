@@ -44,7 +44,7 @@ class AuthServiceImpl implements AuthServiceProtocol {
       id: seedId.millisecondsSinceEpoch.toRadixString(16),
       name: name,
       email: email,
-      imageUrl: image?.path ?? '/assets/images/user.png',
+      imageUrl: image?.path ?? 'assets/images/avatar.png',
     );
 
     _users.putIfAbsent(email, () => user);
