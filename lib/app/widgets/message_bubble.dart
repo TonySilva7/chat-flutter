@@ -15,7 +15,7 @@ class MessageBubble extends StatelessWidget {
 
     if (uri.scheme.contains('http') || uri.scheme.contains('https')) {
       provider = NetworkImage(imageURL);
-    } else if (uri.scheme.contains('file')) {
+    } else if (uri.scheme.contains('file') || uri.path.contains('/Users')) {
       provider = FileImage(File(uri.toString()));
     } else {
       provider = const AssetImage('assets/images/avatar.png');

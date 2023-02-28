@@ -3,8 +3,6 @@ import 'package:chat/app/core/services/auth/auth_service_factory.dart';
 import 'package:chat/app/core/services/chat/chat_service_factory.dart';
 import 'package:chat/app/widgets/message_bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class Messages extends StatelessWidget {
   const Messages({super.key});

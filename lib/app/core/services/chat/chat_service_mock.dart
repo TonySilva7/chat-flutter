@@ -31,11 +31,18 @@ class ChatServiceMock implements ChatServiceProtocol {
       userImageURL: 'assets/images/avatar.png',
     ),
   ];
-  MultiStreamController<List<ChatMessage>>? controller;
+  static MultiStreamController<List<ChatMessage>>? _controller;
+
+  //   static MultiStreamController<ChatUser?>? _controller;
+
+  // static final _userStream = Stream<ChatUser?>.multi((controller) {
+  //   _controller = controller;
+  //   _updateUser(defaultUser);
+  // });
 
   static final _msgsStream = Stream<List<ChatMessage>>.multi((controller) {
-    controller = controller;
-    controller.add(_msgs);
+    _controller = controller;
+    _controller?.add(_msgs);
   });
 
   @override
@@ -58,7 +65,7 @@ class ChatServiceMock implements ChatServiceProtocol {
     // add a mensagem na lista
     _msgs.add(newMessage);
     // add a lista no stream
-    controller?.add(_msgs);
+    _controller?.add(_msgs.reversed.toList());
 
     return newMessage;
   }
