@@ -76,7 +76,8 @@ class MessageBubble extends StatelessWidget {
           left: belongsToCurrentUser ? null : 5,
           right: belongsToCurrentUser ? 5 : null,
           child: Container(
-            // create shadow
+            height: 37,
+            width: 37,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
               boxShadow: [
