@@ -75,7 +75,21 @@ class MessageBubble extends StatelessWidget {
           top: 0,
           left: belongsToCurrentUser ? null : 5,
           right: belongsToCurrentUser ? 5 : null,
-          child: _showUserImage(message.userImageURL, context),
+          child: Container(
+            // create shadow
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 5,
+                  spreadRadius: 1,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+            child: _showUserImage(message.userImageURL, context),
+          ),
         ),
       ],
     );
