@@ -24,7 +24,7 @@ class ChatServiceMock implements ChatServiceProtocol {
     ),
     ChatMessage(
       id: '1',
-      text: 'Legal, vai ser que horas?',
+      text: 'Legal, estarei fora durante uma boa parte da manhã. Vai ser que horas?',
       createdAt: DateTime.now(),
       userId: '123',
       userName: 'Ana',
