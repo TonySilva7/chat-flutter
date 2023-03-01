@@ -11,6 +11,10 @@ class ChatNotificationService with ChangeNotifier {
     notifyListeners();
   }
 
+  int get itemsCount {
+    return _items.length;
+  }
+
   void remove(int index) {
     _items.removeAt(index);
     notifyListeners();
