@@ -5,40 +5,8 @@ import 'package:chat/app/core/models/chat_message.dart';
 import 'package:chat/app/core/services/chat/chat_service_protocol.dart';
 
 class ChatServiceMock implements ChatServiceProtocol {
-  static final List<ChatMessage> _msgs = [
-    ChatMessage(
-      id: '1',
-      text: 'Bom dia! Tem reunião hoje?',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Ana',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '2',
-      text: 'Bom dia, tem sim',
-      createdAt: DateTime.now(),
-      userId: '234',
-      userName: 'Bia',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '1',
-      text: 'Legal, estarei fora durante uma boa parte da manhã. Vai ser que horas?',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Ana',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-  ];
+  static final List<ChatMessage> _msgs = [];
   static MultiStreamController<List<ChatMessage>>? _controller;
-
-  //   static MultiStreamController<ChatUser?>? _controller;
-
-  // static final _userStream = Stream<ChatUser?>.multi((controller) {
-  //   _controller = controller;
-  //   _updateUser(defaultUser);
-  // });
 
   static final _msgsStream = Stream<List<ChatMessage>>.multi((controller) {
     _controller = controller;

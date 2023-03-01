@@ -15,7 +15,8 @@ class _NewMessagesState extends State<NewMessages> {
   final _messageController = TextEditingController();
 
   Future<void> _sendMessage() async {
-    final user = AuthServiceFactory.create().currentUser;
+    final authService = AuthServiceFactory.create();
+    final user = authService.currentUser;
 
     if (user != null) {
       await ChatServiceFactory.create().save(_message, user);
@@ -31,11 +32,17 @@ class _NewMessagesState extends State<NewMessages> {
         children: [
           Expanded(
             child: TextField(
-              controller: _messageController,
-              onChanged: (value) => setState(() => _message = value),
               decoration: const InputDecoration(
                 labelText: 'Nova mensagem',
               ),
+              controller: _messageController,
+              onChanged: (value) => setState(() => _message = value),
+              // onSubmitted: (_) {
+              //   if (_message.trim().isNotEmpty) _sendMessage();
+              // },
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
+              maxLines: null,
             ),
           ),
           IconButton(
