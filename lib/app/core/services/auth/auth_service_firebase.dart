@@ -4,30 +4,34 @@ import 'package:chat/app/core/models/chat_user.dart';
 import 'dart:io';
 
 import 'package:chat/app/core/services/auth/auth_service_protocol.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthServiceMock implements AuthServiceProtocol {
-  static final defaultUser = ChatUser(
-    id: '123',
-    name: 'Ana',
-    email: 'ana@mail.com',
-    imageURL: 'assets/images/avatar.png',
-  );
-
-  static final Map<String, ChatUser> _users = {
-    defaultUser.email: defaultUser,
-  };
-
+class AuthServiceFirebase implements AuthServiceProtocol {
   static ChatUser? _currentUser;
-  static MultiStreamController<ChatUser?>? _controller;
+  // static MultiStreamController<ChatUser?>? _controller;
 
-  static final _userStream = Stream<ChatUser?>.multi((controller) {
-    _controller = controller;
-    _updateUser(defaultUser);
+  static final _userStream = Stream<ChatUser?>.multi((controller) async {
+    // pega a stream de dados do firebase e espelha para o _userStream
+    final authChanges = FirebaseAuth.instance.authStateChanges();
+
+    await for (final user in authChanges) {
+      if (user == null) {
+        _currentUser = null;
+      } else {
+        _currentUser = _toChatUser(user);
+      }
+
+      controller.add(_currentUser);
+    }
   });
 
-  static void _updateUser(ChatUser? user) {
-    _currentUser = user;
-    _controller?.add(_currentUser);
+  static ChatUser _toChatUser(User user) {
+    return ChatUser(
+      id: user.uid,
+      name: user.displayName ?? user.email!.split('@').first,
+      email: user.email!,
+      imageURL: user.photoURL ?? 'assets/images/avatar.png',
+    );
   }
 
   @override
@@ -37,27 +41,20 @@ class AuthServiceMock implements AuthServiceProtocol {
   ChatUser? get currentUser => _currentUser;
 
   @override
-  Future<void> login(String email, String password) async {
-    _updateUser(_users[email]);
-  }
+  Future<void> login(String email, String password) async {}
 
   @override
   Future<void> logout() async {
-    _updateUser(null);
+    FirebaseAuth.instance.signOut();
   }
 
   @override
-  Future<void> signup(String name, String email, String password, File? image) async {
-    final seedId = DateTime.now();
+  Future<void> signup(String name, String mail, String pass, File? image) async {
+    final auth = FirebaseAuth.instance;
+    final UserCredential credential = await auth.createUserWithEmailAndPassword(email: mail, password: pass);
 
-    final user = ChatUser(
-      id: seedId.millisecondsSinceEpoch.toRadixString(16),
-      name: name,
-      email: email,
-      imageURL: image?.path ?? 'assets/images/avatar.png',
-    );
-
-    _users.putIfAbsent(email, () => user);
-    _updateUser(user);
+    if (credential.user != null) return;
+    credential.user?.updateDisplayName(name);
+    // credential.user?.updatePhotoURL(image?.path);
   }
 }

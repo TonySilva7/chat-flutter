@@ -2,7 +2,9 @@
 ## Getting Started
 ---
 ### Setup
-- Por questões de segurança, alguns arquivos foram ignorados. Esses arquivos são gerados automaticamente quando você cria um app *Flutter* no **Firebase** usando a CLI `flutterfire` seguindo os steps no console do **Firebase**. Abaixo está uma lista desses arquivos (os paths são a partir da raiz do seu projeto):
+- Por questões de segurança, alguns arquivos foram ignorados. Esses arquivos são gerados automaticamente quando você 
+cria um app *Flutter* no **Firebase** e faz a configuração local usando a CLI `flutterfire`, seguindo os steps no console do **Firebase**. 
+Abaixo está uma lista desses arquivos (os paths são a partir da raiz do seu projeto):
 ```bash
 # -- android
 android/app/google-services.json
