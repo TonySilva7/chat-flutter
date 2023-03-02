@@ -74,7 +74,8 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     await credential.user?.updatePhotoURL(imageURL);
 
     // 3. Salva os dados do usuário no Firestore (opcional no caso dessa app)
-    await _saveChatUser(_toChatUser(credential.user!, imageURL));
+    final chatUser = _toChatUser(credential.user!, imageURL);
+    await _saveChatUser(chatUser);
   }
 
   Future<void> _saveChatUser(ChatUser user) async {
