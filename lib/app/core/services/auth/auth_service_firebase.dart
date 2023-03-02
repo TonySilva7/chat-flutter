@@ -4,6 +4,7 @@ import 'package:chat/app/core/models/chat_user.dart';
 import 'dart:io';
 
 import 'package:chat/app/core/services/auth/auth_service_protocol.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -25,12 +26,12 @@ class AuthServiceFirebase implements AuthServiceProtocol {
   @override
   Stream<ChatUser?> get userChanges => _userStream;
 
-  static ChatUser _toChatUser(User user) {
+  static ChatUser _toChatUser(User user, [String? imageURL]) {
     return ChatUser(
       id: user.uid,
       name: user.displayName ?? user.email!.split('@').first,
       email: user.email!,
-      imageURL: user.photoURL ?? 'assets/images/avatar.png',
+      imageURL: imageURL ?? user.photoURL ?? 'assets/images/avatar.png',
     );
   }
 
@@ -69,7 +70,23 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     final imageURL = await _uploadUserImage(image, imageName);
 
     // 2. Atualiza os atributos do usuário (nome e foto)
-    credential.user?.updatePhotoURL(imageURL);
-    credential.user?.updateDisplayName(name);
+    await credential.user?.updateDisplayName(name);
+    await credential.user?.updatePhotoURL(imageURL);
+
+    // 3. Salva os dados do usuário no Firestore (opcional no caso dessa app)
+    await _saveChatUser(_toChatUser(credential.user!, imageURL));
+  }
+
+  Future<void> _saveChatUser(ChatUser user) async {
+    final store = FirebaseFirestore.instance;
+    final doc = store.collection('users').doc(user.id);
+
+    return doc.set(
+      {
+        'name': user.name,
+        'email': user.email,
+        'imageURL': user.imageURL,
+      },
+    );
   }
 }
