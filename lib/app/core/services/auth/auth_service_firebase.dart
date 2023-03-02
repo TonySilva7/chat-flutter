@@ -15,11 +15,7 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     final authChanges = FirebaseAuth.instance.authStateChanges();
 
     await for (final user in authChanges) {
-      if (user == null) {
-        _currentUser = null;
-      } else {
-        _currentUser = _toChatUser(user);
-      }
+      _currentUser = user == null ? null : _toChatUser(user);
 
       controller.add(_currentUser);
     }
@@ -41,11 +37,13 @@ class AuthServiceFirebase implements AuthServiceProtocol {
   ChatUser? get currentUser => _currentUser;
 
   @override
-  Future<void> login(String email, String password) async {}
+  Future<void> login(String email, String password) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+  }
 
   @override
   Future<void> logout() async {
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
