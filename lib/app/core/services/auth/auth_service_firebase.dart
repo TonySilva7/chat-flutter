@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:chat/app/core/services/auth/auth_service_protocol.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthServiceFirebase implements AuthServiceProtocol {
   static ChatUser? _currentUser;
@@ -21,6 +22,9 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     }
   });
 
+  @override
+  Stream<ChatUser?> get userChanges => _userStream;
+
   static ChatUser _toChatUser(User user) {
     return ChatUser(
       id: user.uid,
@@ -30,8 +34,15 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     );
   }
 
-  @override
-  Stream<ChatUser?> get userChanges => _userStream;
+  Future<String?> _uploadUserImage(File? image, String imageName) async {
+    if (image == null) return null;
+
+    final storage = FirebaseStorage.instance;
+    final imageRef = storage.ref().child('user_images').child(imageName);
+
+    await imageRef.putFile(image).whenComplete(() {});
+    return await imageRef.getDownloadURL();
+  }
 
   @override
   ChatUser? get currentUser => _currentUser;
@@ -51,8 +62,14 @@ class AuthServiceFirebase implements AuthServiceProtocol {
     final auth = FirebaseAuth.instance;
     final UserCredential credential = await auth.createUserWithEmailAndPassword(email: mail, password: pass);
 
-    if (credential.user != null) return;
+    if (credential.user == null) return;
+
+    // 1. Faz upload da foto do usuário
+    final imageName = '${credential.user!.uid}.jpg';
+    final imageURL = await _uploadUserImage(image, imageName);
+
+    // 2. Atualiza os atributos do usuário (nome e foto)
+    credential.user?.updatePhotoURL(imageURL);
     credential.user?.updateDisplayName(name);
-    // credential.user?.updatePhotoURL(image?.path);
   }
 }

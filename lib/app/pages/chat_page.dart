@@ -1,4 +1,3 @@
-import 'package:chat/app/core/models/chat_notification.dart';
 import 'package:chat/app/core/services/auth/auth_service_factory.dart';
 import 'package:chat/app/core/services/notification/chat_notification_service.dart';
 import 'package:chat/app/pages/notification_page.dart';
