@@ -25,16 +25,17 @@ class ChatServiceFirebase implements ChatServiceProtocol {
       userImageURL: user.imageURL,
     );
 
-    final Map<String, dynamic> mapMessage = chatMessage.toMapAPI();
+    final DocumentReference<ChatMessage> docRef = (await store
+        .collection('chat')
+        .withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        )
+        .add(chatMessage));
 
-    final DocumentReference<Map<String, dynamic>> docRef = await store.collection('chat').add(mapMessage);
-    final DocumentSnapshot<Map<String, dynamic>> doc = await docRef.get();
+    final doc = await docRef.get();
 
-    final Map<String, dynamic> data = doc.data()!;
-    data.putIfAbsent('id', () => doc.id);
-    final msg = ChatMessage.fromMap(data);
-
-    return msg;
+    return doc.data()!;
   }
 
   ChatMessage _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
@@ -44,16 +45,7 @@ class ChatServiceFirebase implements ChatServiceProtocol {
     return ChatMessage.fromMap(data);
   }
 
-  Map<String, dynamic> _toFirestore(String message, ChatUser user, SetOptions? options) {
-    ChatMessage chatMessage = ChatMessage(
-      id: '',
-      text: message,
-      createdAt: DateTime.now(),
-      userId: user.id,
-      userName: user.name,
-      userImageURL: user.imageURL,
-    );
-
-    return chatMessage.toMapAPI();
+  Map<String, Object?> _toFirestore(ChatMessage chat, SetOptions? options) {
+    return chat.toMapAPI();
   }
 }
