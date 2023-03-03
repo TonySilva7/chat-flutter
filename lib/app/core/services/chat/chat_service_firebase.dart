@@ -15,6 +15,7 @@ class ChatServiceFirebase implements ChatServiceProtocol {
           fromFirestore: _fromFirestore,
           toFirestore: _toFirestore,
         )
+        .orderBy('createdAt', descending: true)
         .snapshots();
 
     return Stream<List<ChatMessage>>.multi((controller) {
