@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:chat/app/core/models/chat_user.dart';
 import 'package:chat/app/core/models/chat_message.dart';
@@ -9,7 +8,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatServiceFirebase implements ChatServiceProtocol {
   @override
   Stream<List<ChatMessage>> messageStream() {
-    return const Stream<List<ChatMessage>>.empty();
+    final store = FirebaseFirestore.instance;
+    final snapshots = store
+        .collection('chat')
+        .withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        )
+        .snapshots();
+
+    return Stream<List<ChatMessage>>.multi((controller) {
+      snapshots.listen((snapshot) {
+        final messages = snapshot.docs.map((doc) => doc.data()).toList();
+
+        controller.add(messages);
+      });
+    });
   }
 
   @override
