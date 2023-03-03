@@ -36,4 +36,24 @@ class ChatServiceFirebase implements ChatServiceProtocol {
 
     return msg;
   }
+
+  ChatMessage _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
+    final Map<String, dynamic> data = doc.data()!;
+    data.putIfAbsent('id', () => doc.id);
+
+    return ChatMessage.fromMap(data);
+  }
+
+  Map<String, dynamic> _toFirestore(String message, ChatUser user, SetOptions? options) {
+    ChatMessage chatMessage = ChatMessage(
+      id: '',
+      text: message,
+      createdAt: DateTime.now(),
+      userId: user.id,
+      userName: user.name,
+      userImageURL: user.imageURL,
+    );
+
+    return chatMessage.toMapAPI();
+  }
 }
