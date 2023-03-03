@@ -27,10 +27,20 @@ class ChatMessage {
     };
   }
 
+  Map<String, dynamic> toMapAPI() {
+    return {
+      'text': text,
+      'createdAt': createdAt.toIso8601String(),
+      'userId': userId,
+      'userName': userName,
+      'userImageURL': userImageURL,
+    };
+  }
+
   ChatMessage.fromMap(Map<String, dynamic> map)
       : id = map['id'],
         text = map['text'],
-        createdAt = map['createdAt'].toDate(),
+        createdAt = DateTime.parse(map['createdAt']),
         userId = map['userId'],
         userName = map['userName'],
         userImageURL = map['userImageURL'];
