@@ -2,13 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	<!-- Permissoes -->
+		<!-- Permissoes -->
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>$(PRODUCT_NAME) Gostaríamos de acessar suas fotos.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>$(PRODUCT_NAME) Gostaríamos de acessar sua câmera.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>$(PRODUCT_NAME) Gostaríamos de acessar seu microfone.</string>
+		<!-- Notificações -->
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>remote-notification</string>
+		</array>
+		<key>NSRemoteNotificationEntitlement</key>
+		<string>$(TeamIdentifierPrefix)$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>UIUserInterfaceStyle</key>
+		<string>Light</string>
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<true/>
 		<!--  -->
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>

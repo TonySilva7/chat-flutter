@@ -5,11 +5,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "chat",
+      "name": "chat-ios-f",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "868d709a14f1206cbcbe740686f30f0febc66a0b"
+    },
+    {
+      "name": "chat-ios-e",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
       "deviceId": "757865D9-E04C-4E4B-B88D-91941F7B187B"
+    },
+    {
+      "name": "chat-android",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "emulator-5554"
     },
     {
       "name": "chat (profile mode)",

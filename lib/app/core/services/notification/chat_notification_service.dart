@@ -24,20 +24,22 @@ class ChatNotificationService with ChangeNotifier {
   // push notification
   Future<void> init() async {
     await _configureForeground();
+
+    // await _checkToken();
   }
 
   Future<bool> get _isAuthorized async {
     final messaging = FirebaseMessaging.instance;
 
     final settings = await messaging.requestPermission(
-        // alert: true,
-        // announcement: false,
-        // badge: true,
-        // carPlay: false,
-        // criticalAlert: false,
-        // provisional: false,
-        // sound: true,
-        );
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       return true;
@@ -62,4 +64,12 @@ class ChatNotificationService with ChangeNotifier {
       });
     }
   }
+
+  // Future<void> _checkToken() async {
+  //   final FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  //   final String? token = await messaging.getToken();
+
+  //   print('Token: $token');
+  // }
 }
