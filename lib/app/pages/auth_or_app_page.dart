@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:chat/firebase_options.dart';
+import 'package:provider/provider.dart';
+import '../core/services/notification/chat_notification_service.dart';
 import 'auth_page.dart';
 import 'chat_page.dart';
 
@@ -15,6 +17,8 @@ class AuthOrAppPage extends StatelessWidget {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // ignore: use_build_context_synchronously
+    await Provider.of<ChatNotificationService>(context, listen: false).init();
   }
 
   @override
