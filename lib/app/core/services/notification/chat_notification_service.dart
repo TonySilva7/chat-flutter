@@ -24,6 +24,8 @@ class ChatNotificationService with ChangeNotifier {
   // push notification
   Future<void> init() async {
     await _configureForeground();
+    await _configureBackground();
+    await _configureTerminated();
 
     // await _checkToken();
   }
@@ -52,17 +54,38 @@ class ChatNotificationService with ChangeNotifier {
 
   Future<void> _configureForeground() async {
     if (await _isAuthorized) {
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        final RemoteNotification? notification = message.notification;
-        // final Map<String, dynamic> data = message.data;
-        if (message.notification == null) return;
-
-        add(ChatNotification(
-          title: notification?.title ?? 'Não informado',
-          body: notification?.body ?? 'Não informado',
-        ));
-      });
+      FirebaseMessaging.onMessage.listen(_messageHandler);
     }
+  }
+
+  Future<void> _configureBackground() async {
+    if (await _isAuthorized) {
+      FirebaseMessaging.onMessageOpenedApp.listen(_messageHandler);
+    }
+  }
+
+  Future<void> _configureTerminated() async {
+    if (await _isAuthorized) {
+      final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+      if (initialMessage != null) {
+        _messageHandler(initialMessage);
+      }
+    }
+  }
+
+  void _messageHandler(RemoteMessage? message) {
+    final RemoteNotification? notification = message?.notification;
+    // final Map<String, dynamic> data = message.data;
+
+    print('Mensagem: ${notification}');
+
+    if (message == null || message.notification == null) return;
+
+    add(ChatNotification(
+      title: notification?.title ?? 'Não informado',
+      body: notification?.body ?? 'Não informado',
+    ));
   }
 
   // Future<void> _checkToken() async {
