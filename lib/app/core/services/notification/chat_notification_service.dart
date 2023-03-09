@@ -23,9 +23,9 @@ class ChatNotificationService with ChangeNotifier {
 
   // push notification
   Future<void> init() async {
+    await _configureTerminated();
     await _configureForeground();
     await _configureBackground();
-    await _configureTerminated();
 
     // await _checkToken();
   }
